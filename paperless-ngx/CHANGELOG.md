@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.17.4-2
+- Revert to 1.17.4 due to problem with gs version
+
 ## 2.1.0-1
 - Upgrade to paperless-ngx v2.1.0
 
