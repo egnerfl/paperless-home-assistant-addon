@@ -7,7 +7,7 @@ _Paperless is an application that manages your personal documents. With the help
 The installation of this add-on is pretty straightforward and not different in
 comparison to installing any other Home Assistant add-on.
 
-1. Add Add this URL to your Home Assistant addons repos (Supervisor -> Add-on store -> three dots upper right): `https://github.com/TheBestMoshe/home-assistant-addons`
+1. Add Add this URL to your Home Assistant addons repos (Supervisor -> Add-on store -> three dots upper right): `https://github.com/Rudertier/paperless-home-assistant-addon`
 1. Install this add-on.
 1. Set the configuration.
 1. Click the `Save` button to store your configuration.
@@ -60,3 +60,7 @@ This can be a combination of multiple languages such as deu+eng, in which case t
 ### Option: `default_superuser`
 
 When the addon starts up, if this user is not created, it will create it.
+
+### Option: `timezone`
+
+Set the timezone of Paperless defaults to UTC. (Options are: Europe/Berlin, Asia/Bishkek and [many more](https://docs.djangoproject.com/en/4.1/ref/settings/#std:setting-TIME_ZONE))

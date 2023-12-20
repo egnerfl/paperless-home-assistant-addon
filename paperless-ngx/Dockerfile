@@ -1,9 +1,11 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
+ARG version=v1.17.4
+
 #Dependencies
 RUN apt-get update \
-    && apt-get -y --no-install-recommends install \
+    && apt-get -y install \
     build-essential \
     curl \
     file \
@@ -45,9 +47,13 @@ RUN apt-get update \
     unzip \
     wget \
     zlib1g \
+    default-libmysqlclient-dev \
+    pkg-config \
+    mime-support\
+    poppler-utils \
     && mkdir /var/log/supervisord /var/run/supervisord
 
-RUN wget -O paperless.tar.xz https://github.com/paperless-ngx/paperless-ngx/releases/download/v1.16.5/paperless-ngx-v1.16.5.tar.xz \
+RUN wget -O paperless.tar.xz https://github.com/paperless-ngx/paperless-ngx/releases/download/$version/paperless-ngx-$version.tar.xz \
     && 7z x paperless.tar.xz \
     && 7z x paperless.tar -o/usr/src/ \
     && cd /usr/src 
@@ -73,8 +79,15 @@ RUN cp -R ./src /usr/src/paperless/
 
 
 # Install requirements
-RUN python3 -m pip install --upgrade pip supervisor setuptools \
-    && env QPDF_SOURCE_TREE=/qpdf python3 -m pip install --no-cache-dir -r requirements.txt
+RUN python3 -m pip install --upgrade pip supervisor setuptools 
+RUN env QPDF_SOURCE_TREE=/qpdf 
+RUN python3 -m pip install --no-cache-dir -r requirements.txt
+
+
+# Download NLTK Stopwords
+RUN mkdir -p /usr/src/paperless/nltk
+ENV PAPERLESS_NLTK_DIR="/usr/src/paperless/nltk"
+RUN [ "python3", "-c", "import nltk; nltk.download('all', download_dir='/usr/src/paperless/nltk')" ]
 
 #### Redis Setup
 RUN apt-get install redis-server redis-tools -y
@@ -124,4 +137,4 @@ EXPOSE 8000
 
 CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisord.conf"]
 
-LABEL maintainer="Moshe <34072688+TheBestMoshe@users.noreply.github.com>"
+LABEL maintainer="Rudertier <Rudertiers@users.noreply.github.com>"
